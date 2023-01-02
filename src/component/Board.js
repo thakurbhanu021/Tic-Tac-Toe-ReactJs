@@ -6,7 +6,7 @@ import classes from "./Board.module.css";
 const Board = () => {
   const [input, setInput] = useState(Array(9).fill(null));
   const [isTurn, setIsTurn] = useState(true);
-
+  
   const checkWinner = () => {
     const win = [
       [0, 1, 2],
@@ -26,7 +26,21 @@ const Board = () => {
     }
     return false;
   };
+  const checkTie = () => {
+    let filled = true;
+    const data = [...input];
+    data.forEach((item)=>{
+      if(item === null){
+        filled = false;
+        return false;
+      }
+    });
+    if(filled){
+      return true;
+    }
+  }
   const winner = checkWinner();
+  const tie = checkTie();
 
   const clickHandler = (index) => {
     if (input[index] == null) {
@@ -53,7 +67,15 @@ const Board = () => {
         </p>
         <button onClick={PlayAgainHandler} className={classes.btn}>Play Again</button>
         </div>
-      ) : (
+      ) : (tie ? (
+        <div className={classes.winner}>
+        <p className={classes.text}>
+          {winner} It's a Tie!! So Nobody Won the game!
+          
+        </p>
+        <button onClick={PlayAgainHandler} className={classes.btn}>Play Again</button>
+        </div>
+      ):
         <>
           {" "}
           <div className={classes.row}>
